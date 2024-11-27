@@ -65,7 +65,7 @@ abstract class AbstractGateway extends BaseAbstractGateway {
             $this->gocardless = new GoCardlessClient(
                 [
                     'access_token' => $parameters['access_token'],
-                    'environment'  => Environment::LIVE,
+                    'environment'  => isset($parameters['testMode']) ? ($parameters['testMode'] ? Environment::SANDBOX : Environment::LIVE) : Environment::LIVE,
                 ]
             );
         }
