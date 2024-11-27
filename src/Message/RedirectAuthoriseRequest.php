@@ -27,6 +27,7 @@ class RedirectAuthoriseRequest extends AbstractRequest {
      * @return RedirectAuthoriseResponse
      */
     public function sendData($data) {
+        bdump($data);
         $response = $this->gocardless->billingRequestFlows()->create(['params' => $data]);
 
         return $this->response = new RedirectAuthoriseResponse($this, $response);
