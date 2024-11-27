@@ -3,7 +3,16 @@ namespace Omnipay\GoCardlessV2\Message;
 
 class CreateBillingRequestRequest extends AbstractRequest {
     public function getData() {
-        return [];
+        return [
+            "payment_request" => [
+                "description" => $this->getDescription(),
+                "amount"      => $this->getAmount(),
+                "currency"    => $this->getCurrency()
+            ],
+            "links"           => [
+                "customer" => $this->getCustomerMetaData()['id']
+            ]
+        ];
     }
 
     /**
