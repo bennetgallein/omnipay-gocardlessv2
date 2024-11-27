@@ -4,7 +4,7 @@ namespace Omnipay\GoCardlessV2;
 
 use GoCardlessPro\Client as GoCardlessClient;
 use GoCardlessPro\Environment;
-use Guzzle\Http\ClientInterface;
+use Omnipay\Common\Http\Client;
 use Omnipay\Common\AbstractGateway as BaseAbstractGateway;
 use Omnipay\Common\Exception\InvalidResponseException;
 use Omnipay\Common\Message\RequestInterface;
@@ -31,8 +31,7 @@ use Symfony\Component\HttpFoundation\Request as HttpRequest;
  * @method RequestInterface deleteCard(array $options = array())        (Optional method)
  *         Delete a stored card
  */
-abstract class AbstractGateway extends BaseAbstractGateway
-{
+abstract class AbstractGateway extends BaseAbstractGateway {
     /**
      * @var GoCardlessClient
      */
@@ -41,45 +40,43 @@ abstract class AbstractGateway extends BaseAbstractGateway
     /**
      * Create a new gateway instance
      *
-     * @param ClientInterface $httpClient A Guzzle client to make API calls with
+     * @param Client $httpClient A Guzzle client to make API calls with
      * @param HttpRequest $httpRequest A Symfony HTTP request object
      * @param GoCardlessClient $gocardless The GoCardless Client
      */
     public function __construct(
-        ClientInterface $httpClient = null,
+        Client $httpClient = null,
         HttpRequest $httpRequest = null,
         GoCardlessClient $gocardless = null
     ) {
         $this->gocardless = $gocardless ?: new GoCardlessClient(
             [
                 'access_token' => '',
-                'environment' => Environment::SANDBOX, // default a blank to sandbox
+                'environment'  => Environment::SANDBOX, // default a blank to sandbox
             ]
         );
 
         parent::__construct($httpClient, $httpRequest);
     }
 
-    public function initialize(array $parameters = [])
-    {
+    public function initialize(array $parameters = []) {
         parent::initialize($parameters);
         if ($parameters && array_key_exists('access_token', $parameters)) {
             $this->gocardless = new GoCardlessClient(
                 [
                     'access_token' => $parameters['access_token'],
-                    'environment' => Environment::LIVE,
+                    'environment'  => Environment::LIVE,
                 ]
             );
         }
     }
 
-    public function setTestMode($value)
-    {
+    public function setTestMode($value) {
         if ($value && $this->getParameter('access_token')) {
             $this->gocardless = new GoCardlessClient(
                 [
                     'access_token' => $this->getParameter('access_token'),
-                    'environment' => Environment::SANDBOX,
+                    'environment'  => Environment::SANDBOX,
                 ]
             );
         }
@@ -87,26 +84,22 @@ abstract class AbstractGateway extends BaseAbstractGateway
         return parent::setTestMode($value);
     }
 
-    public function setAccessToken($value)
-    {
+    public function setAccessToken($value) {
         return $this->setParameter('access_token', $value);
     }
 
-    public function getAccessToken()
-    {
+    public function getAccessToken() {
         return $this->getParameter('access_token');
     }
 
-    public function setSecret($value)
-    {
+    public function setSecret($value) {
         return $this->setParameter('secret', $value);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function createRequest($class, array $parameters)
-    {
+    protected function createRequest($class, array $parameters) {
         /**
          * @var AbstractRequest $obj
          */
@@ -115,16 +108,14 @@ abstract class AbstractGateway extends BaseAbstractGateway
         return $obj->initialize(array_replace($this->getParameters(), $parameters));
     }
 
-    public function getName()
-    {
+    public function getName() {
         return 'GoCardlessV2';
     }
 
-    public function getDefaultParameters()
-    {
+    public function getDefaultParameters() {
         return [
             'accessToken' => '',
-            'testMode' => true,
+            'testMode'    => true,
         ];
     }
 
@@ -133,8 +124,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\FindCustomerRequest|Message\AbstractRequest
      */
-    public function findCustomer($id)
-    {
+    public function findCustomer($id) {
         return $this->createRequest(Message\FindCustomerRequest::class, ['customerReference' => $id]);
     }
 
@@ -143,8 +133,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\UpdateCustomerRequest|Message\AbstractRequest
      */
-    public function updateCustomer(array $parameters = [])
-    {
+    public function updateCustomer(array $parameters = []) {
         return $this->createRequest(Message\UpdateCustomerRequest::class, $parameters);
     }
 
@@ -153,8 +142,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\ValidateBankAccountRequest|Message\AbstractRequest
      */
-    public function validateBankAccount(array $parameters = [])
-    {
+    public function validateBankAccount(array $parameters = []) {
         return $this->createRequest(Message\ValidateBankAccountRequest::class, $parameters);
     }
 
@@ -163,8 +151,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\FindCustomerBankAccountRequest|Message\AbstractRequest
      */
-    public function findCustomerBankAccount($id)
-    {
+    public function findCustomerBankAccount($id) {
         return $this->createRequest(Message\FindCustomerBankAccountRequest::class, ['bankAccountReference' => $id]);
     }
 
@@ -173,8 +160,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\DisableCustomerBankAccountRequest|Message\AbstractRequest
      */
-    public function disableCustomerBankAccount($id)
-    {
+    public function disableCustomerBankAccount($id) {
         return $this->createRequest(Message\DisableCustomerBankAccountRequest::class, ['bankAccountReference' => $id]);
     }
 
@@ -183,8 +169,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\UpdateCustomerBankAccountRequest|Message\AbstractRequest
      */
-    public function updateCustomerBankAccount(array $parameters = [])
-    {
+    public function updateCustomerBankAccount(array $parameters = []) {
         return $this->createRequest(Message\UpdateCustomerBankAccountRequest::class, $parameters);
     }
 
@@ -193,8 +178,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\FindMandateRequest|Message\AbstractRequest
      */
-    public function findMandate($id)
-    {
+    public function findMandate($id) {
         return $this->createRequest(Message\FindMandateRequest::class, ['mandateReference' => $id]);
     }
 
@@ -203,8 +187,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\CancelMandateRequest|Message\AbstractRequest
      */
-    public function cancelMandate($id)
-    {
+    public function cancelMandate($id) {
         return $this->createRequest(Message\CancelMandateRequest::class, ['mandateReference' => $id]);
     }
 
@@ -213,8 +196,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\ReinstateMandateRequest|Message\AbstractRequest
      */
-    public function reinstateMandate($id)
-    {
+    public function reinstateMandate($id) {
         return $this->createRequest(Message\ReinstateMandateRequest::class, ['mandateReference' => $id]);
     }
 
@@ -223,8 +205,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\UpdateMandateRequest|Message\AbstractRequest
      */
-    public function updateMandate(array $parameters = [])
-    {
+    public function updateMandate(array $parameters = []) {
         return $this->createRequest(Message\UpdateMandateRequest::class, $parameters);
     }
 
@@ -233,8 +214,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\CreatePaymentRequest|Message\AbstractRequest
      */
-    public function createPayment(array $parameters = [])
-    {
+    public function createPayment(array $parameters = []) {
         return $this->createRequest(Message\CreatePaymentRequest::class, $parameters);
     }
 
@@ -243,8 +223,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\FindPaymentRequest|Message\AbstractRequest
      */
-    public function findPayment($id)
-    {
+    public function findPayment($id) {
         return $this->createRequest(Message\FindPaymentRequest::class, ['paymentId' => $id]);
     }
 
@@ -253,8 +232,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\CancelPaymentRequest|Message\AbstractRequest
      */
-    public function cancelPayment($id)
-    {
+    public function cancelPayment($id) {
         return $this->createRequest(Message\CancelPaymentRequest::class, ['paymentId' => $id]);
     }
 
@@ -263,8 +241,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\RetryPaymentRequest|Message\AbstractRequest
      */
-    public function retryPayment(array $parameters = [])
-    {
+    public function retryPayment(array $parameters = []) {
         return $this->createRequest(Message\RetryPaymentRequest::class, $parameters);
     }
 
@@ -273,8 +250,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\UpdatePaymentRequest|Message\AbstractRequest
      */
-    public function updatePayment(array $parameters = [])
-    {
+    public function updatePayment(array $parameters = []) {
         return $this->createRequest(Message\UpdatePaymentRequest::class, $parameters);
     }
 
@@ -285,8 +261,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\CreatePaymentRequest|Message\AbstractRequest
      */
-    public function purchase(array $parameters = [])
-    {
+    public function purchase(array $parameters = []) {
         return $this->createPayment($parameters);
     }
 
@@ -297,8 +272,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\CreateRefundRequest|Message\AbstractRequest
      */
-    public function createRefund(array $parameters = [])
-    {
+    public function createRefund(array $parameters = []) {
         return $this->createRequest(Message\CreateRefundRequest::class, $parameters);
     }
 
@@ -307,8 +281,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\FindRefundRequest|Message\AbstractRequest
      */
-    public function findRefund($id)
-    {
+    public function findRefund($id) {
         return $this->createRequest(Message\FindRefundRequest::class, ['transactionReference' => $id]);
     }
 
@@ -317,8 +290,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\UpdateRefundRequest|Message\AbstractRequest
      */
-    public function updateRefund(array $parameters = [])
-    {
+    public function updateRefund(array $parameters = []) {
         return $this->createRequest(Message\UpdateRefundRequest::class, $parameters);
     }
 
@@ -330,8 +302,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\CreateRefundRequest|Message\AbstractRequest
      */
-    public function refund(array $parameters = [])
-    {
+    public function refund(array $parameters = []) {
         return $this->createRefund($parameters);
     }
 
@@ -340,8 +311,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\CreateSubscriptionRequest|Message\AbstractRequest
      */
-    public function createSubscription(array $parameters = [])
-    {
+    public function createSubscription(array $parameters = []) {
         return $this->createRequest(Message\CreateSubscriptionRequest::class, $parameters);
     }
 
@@ -350,8 +320,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\CancelSubscriptionRequest|Message\AbstractRequest
      */
-    public function cancelSubscription($subscriptionId)
-    {
+    public function cancelSubscription($subscriptionId) {
         return $this->createRequest(Message\CancelSubscriptionRequest::class, ['subscriptionId' => $subscriptionId]);
     }
 
@@ -360,8 +329,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\FindSubscriptionRequest|Message\AbstractRequest
      */
-    public function findSubscription($subscriptionId)
-    {
+    public function findSubscription($subscriptionId) {
         return $this->createRequest(Message\FindSubscriptionRequest::class, ['subscriptionId' => $subscriptionId]);
     }
 
@@ -370,8 +338,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\UpdateSubscriptionRequest|Message\AbstractRequest
      */
-    public function updateSubscription(array $parameters = [])
-    {
+    public function updateSubscription(array $parameters = []) {
         return $this->createRequest(Message\UpdateSubscriptionRequest::class, $parameters);
     }
 
@@ -382,8 +349,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\OAuthRequest|Message\AbstractRequest
      */
-    public function requestOAuth(array $parameters = [])
-    {
+    public function requestOAuth(array $parameters = []) {
         return $this->createRequest(Message\OAuthRequest::class, $parameters);
     }
 
@@ -394,8 +360,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\OAuthConfirmRequest|Message\AbstractRequest
      */
-    public function confirmOAuth(array $parameters = [])
-    {
+    public function confirmOAuth(array $parameters = []) {
         return $this->createRequest(Message\OAuthConfirmRequest::class, $parameters);
     }
 
@@ -404,8 +369,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\FindEventRequest|Message\AbstractRequest
      */
-    public function findEvent($eventId)
-    {
+    public function findEvent($eventId) {
         return $this->createRequest(Message\FindEventRequest::class, ['eventId' => $eventId]);
     }
 
@@ -416,8 +380,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return Message\FindPaymentsByCustomerRequest|Message\AbstractRequest
      */
-    public function findPaymentsByCustomer(array $parameters = [])
-    {
+    public function findPaymentsByCustomer(array $parameters = []) {
         return $this->createRequest(Message\FindPaymentsByCustomerRequest::class, $parameters);
     }
 
@@ -428,16 +391,14 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return \Omnipay\Common\Message\AbstractRequest|AbstractRequest
      */
-    public function findPaymentsBySubscription(array $parameters = [])
-    {
+    public function findPaymentsBySubscription(array $parameters = []) {
         return $this->createRequest(Message\FindPaymentsBySubscriptionRequest::class, $parameters);
     }
 
-    public function findSubscriptionsByCustomer(array $parameters = [])
-    {
+    public function findSubscriptionsByCustomer(array $parameters = []) {
         return $this->createRequest(Message\FindSubscriptionsByCustomerRequest::class, $parameters);
     }
-    
+
     /**
      * attempt to process the data from the webhooks
      * fetches the latest version of each eventID (as per GoCardless documentation)
@@ -452,8 +413,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @throws InvalidResponseException
      */
-    public function parseNotification($rawPayload, $provided_signature = null)
-    {
+    public function parseNotification($rawPayload, $provided_signature = null) {
         $return = [];
         if (!$this->authenticateNotification($rawPayload, $provided_signature)) {
             throw new InvalidResponseException('Invalid security token from webhook response');
@@ -476,8 +436,7 @@ abstract class AbstractGateway extends BaseAbstractGateway
      *
      * @return bool
      */
-    public function authenticateNotification($rawPayload, $provided_signature = null)
-    {
+    public function authenticateNotification($rawPayload, $provided_signature = null) {
         if ($this->getParameter('secret')) {// validate
             $calculated_signature = hash_hmac('sha256', $rawPayload, $this->getParameter('secret'));
             if ($provided_signature != $calculated_signature) {
