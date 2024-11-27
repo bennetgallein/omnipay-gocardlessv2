@@ -8,13 +8,11 @@ namespace Omnipay\GoCardlessV2\Message;
 class RedirectAuthoriseRequest extends AbstractRequest {
     public function getData() {
         $data = [
-            'description'          => $this->getDescription(),
-            'session_token'        => $this->getTransactionId(),
-            'success_redirect_url' => $this->getReturnUrl(),
+            'redirect_uri' => $this->getDescription(),
+            'exit_uri'     => $this->getTransactionId(),
+            'links'        => [
+                "billing_request" => $this->getParameter("billingRequestId")],
         ];
-        if ($this->getCreditorId()) {
-            $data['links']['creditor'] = $this->getCreditorId();
-        }
 
         return $data;
     }
