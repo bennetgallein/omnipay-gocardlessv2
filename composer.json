@@ -49,7 +49,7 @@
     "gocardless/gocardless-pro": "^6",
     "php": "^7|^8",
     "symfony/event-dispatcher": "^7",
-    "php-http/guzzle7-adapter": "^1.1"
+    "php-http/guzzle7-adapter": "^1"
   },
   "require-dev": {
     "omnipay/tests": "^4.0",
