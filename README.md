@@ -2,10 +2,10 @@
 
 **Go Cardless driver for the Omnipay PHP payment processing library using the GoCardless v2 API**
 
-[![Build Status](https://travis-ci.org/digitickets/omnipay-gocardlessv2.png?branch=master)](https://travis-ci.org/digitickets/omnipay-gocardlessv2)
-[![Coverage Status](https://coveralls.io/repos/github/digitickets/omnipay-gocardlessv2/badge.svg?branch=master)](https://coveralls.io/github/digitickets/omnipay-gocardlessv2?branch=master)
-[![Latest Stable Version](https://poser.pugx.org/digitickets/omnipay-gocardlessv2/version.png)](https://packagist.org/packages/digitickets/omnipay-gocardlessv2)
-[![Total Downloads](https://poser.pugx.org/digitickets/omnipay-gocardlessv2/d/total.png)](https://packagist.org/packages/digitickets/omnipay-gocardlessv2)
+[![Build Status](https://travis-ci.org/bennetgallein/omnipay-gocardlessv2.png?branch=master)](https://travis-ci.org/bennetgallein/omnipay-gocardlessv2)
+[![Coverage Status](https://coveralls.io/repos/github/bennetgallein/omnipay-gocardlessv2/badge.svg?branch=master)](https://coveralls.io/github/bennetgallein/omnipay-gocardlessv2?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/bennetgallein/omnipay-gocardlessv2/version.png)](https://packagist.org/packages/bennetgallein/omnipay-gocardlessv2)
+[![Total Downloads](https://poser.pugx.org/bennetgallein/omnipay-gocardlessv2/d/total.png)](https://packagist.org/packages/bennetgallein/omnipay-gocardlessv2)
 
 
 [Omnipay](https://github.com/thephpleague/omnipay) is a framework agnostic, multi-gateway payment
@@ -138,5 +138,5 @@ If you want to keep up to date with release anouncements, discuss ideas for the 
 or ask more detailed questions, there is also a [mailing list](https://groups.google.com/forum/#!forum/omnipay) which
 you can subscribe to.
 
-If you believe you have found a bug, please report it using the [GitHub issue tracker](https://github.com/digitickets/omnipay-gocardlessv2e/issues),
+If you believe you have found a bug, please report it using the [GitHub issue tracker](https://github.com/bennetgallein/omnipay-gocardlessv2e/issues),
 or better yet, fork the library and submit a pull request.
