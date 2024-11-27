@@ -11,7 +11,7 @@ class RedirectAuthoriseRequest extends AbstractRequest {
             'redirect_uri' => $this->getDescription(),
             'exit_uri'     => $this->getTransactionId(),
             'links'        => [
-                "billing_request" => $this->getParameter("billingRequestId")],
+                "billing_request" => $this->getBillingRequestId()],
         ];
 
         return $data;

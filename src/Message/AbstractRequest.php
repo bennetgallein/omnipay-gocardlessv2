@@ -467,4 +467,8 @@ abstract class AbstractRequest extends BaseAbstractRequest {
     public function getSecret() {
         return $this->getParameter('secret');
     }
+
+    public function getBillingRequestId() {
+        return $this->getParameter("billingRequestId");
+    }
 }
