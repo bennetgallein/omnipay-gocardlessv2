@@ -5,13 +5,11 @@ namespace Omnipay\GoCardlessV2\Message;
 /**
  * @method RedirectCompleteAuthoriseResponse send()
  */
-class RedirectCompleteAuthoriseRequest extends AbstractRequest
-{
-    public function getData()
-    {
+class RedirectCompleteAuthoriseRequest extends AbstractRequest {
+    public function getData() {
         $data = [
             'authorisationRequestId' => $this->getTransactionReference(),
-            'params' => [
+            'params'                 => [
                 'session_token' => $this->getTransactionId(),
             ],
         ];
@@ -26,9 +24,8 @@ class RedirectCompleteAuthoriseRequest extends AbstractRequest
      *
      * @return RedirectCompleteAuthoriseResponse
      */
-    public function sendData($data)
-    {
-        $response = $this->gocardless->redirectFlows()->complete($data['authorisationRequestId'], $data);
+    public function sendData($data) {
+        $response = $this->gocardless->billingRequestFlows()->complete($data['authorisationRequestId'], $data);
 
         return $this->response = new RedirectCompleteAuthoriseResponse($this, $response);
     }
