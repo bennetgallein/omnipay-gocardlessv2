@@ -8,9 +8,6 @@ class CreateBillingRequestRequest extends AbstractRequest {
                 "description" => $this->getDescription(),
                 "amount"      => $this->getAmount(),
                 "currency"    => $this->getCurrency()
-            ],
-            "links"           => [
-                "customer" => $this->getCustomerMetaData()['id']
             ]
         ];
     }
