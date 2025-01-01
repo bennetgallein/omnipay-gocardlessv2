@@ -6,7 +6,7 @@ class CreateBillingRequestRequest extends AbstractRequest {
         return [
             "payment_request" => [
                 "description" => $this->getDescription(),
-                "amount"      => $this->getAmount(),
+                "amount"      => $this->getAmount() * 100,
                 "currency"    => $this->getCurrency()
             ]
         ];
